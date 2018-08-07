@@ -1,36 +1,26 @@
 package edu.iss.cab.controllers;
 
-import java.util.ArrayList;
-
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 import edu.iss.cab.model.User;
 
-
 @Component
-@Scope(value="session", proxyMode=ScopedProxyMode.TARGET_CLASS)
+@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserSession {
-	
+
 	private String sessionId = null;
 	private User user = null;
-	
-	//private Employee employee = null;
-	//private ArrayList<Employee> subordinates = null;
-	
+
 	public UserSession() {
 		super();
 	}
 
-	//public UserSession(String sessionId, User user, Employee employee, ArrayList<Employee> subordinates)
-	
 	public UserSession(String sessionId, User user) {
 		super();
 		this.sessionId = sessionId;
 		this.user = user;
-		//this.employee = employee;
-		//this.subordinates = subordinates;
 	}
 
 	public String getSessionId() {
@@ -48,22 +38,6 @@ public class UserSession {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
-	/*public Employee getEmployee() {
-		return employee;
-	}
-
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
-	}
-
-	public ArrayList<Employee> getSubordinates() {
-		return subordinates;
-	}
-
-	public void setSubordinates(ArrayList<Employee> subordinates) {
-		this.subordinates = subordinates;
-	}*/
 
 	@Override
 	public int hashCode() {
@@ -89,8 +63,5 @@ public class UserSession {
 			return false;
 		return true;
 	}
-	
-	
-
 
 }

@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import edu.iss.cab.model.User;
 import edu.iss.cab.service.UserService;
 
+//CHIT SU SHINE
 @Controller
 public class CommonController {
 
@@ -48,22 +49,18 @@ public class CommonController {
 				us.setUser(u);
 				// PUT CODE FOR SETTING SESSION ID
 				us.setSessionId(session.getId());
-
-				/*
-				 * us.setEmployee(eService.findEmployeeById(us.getUser().getEmployeeId()));
-				 * ArrayList<Employee> subordinates =
-				 * eService.findSubordinates(us.getUser().getEmployeeId()); if (subordinates !=
-				 * null) { us.setSubordinates(subordinates);
-				 * 
-				 * }
-				 */
-
-				mav = new ModelAndView("redirect:/admin/facility/list");
+				mav = new ModelAndView("redirect:/booking/facilities");
 			}
 		} else {
 			return mav;
 		}
 		session.setAttribute("USERSESSION", us);
 		return mav;
+	}
+	
+	@RequestMapping(value = "/logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/";
 	}
 }

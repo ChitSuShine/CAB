@@ -89,7 +89,7 @@ public class AdminFacilityController {
 
 		ModelAndView mav = new ModelAndView("redirect:/admin/facility/list");
 		String message = "Facility was successfully updated.";
-		
+
 		facility.setFacilityId(id);
 		fService.updateFacility(facility);
 
