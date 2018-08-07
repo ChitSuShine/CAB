@@ -8,7 +8,7 @@ public interface FacilityService {
 
 	ArrayList<Facility> findAllFacilitiesWithStatus();
 
-	Facility findFacility(String facilityId);
+	Facility findFacility(Integer facilityId);
 
 	Facility createFacility(Facility facility);
 
@@ -16,4 +16,6 @@ public interface FacilityService {
 
 	void removeFacility(Facility facility);
 
+	/* Search Function - For Searching to book facility */
+	ArrayList<Facility> searchFacilitiesByName(String content);
 }

@@ -16,47 +16,24 @@ public class FacilityServiceImpl implements FacilityService {
 	@Resource
 	FacilityRepository facilityRepository;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.iss.cab.service.FacilityService#findDepartment(java.lang.String)
-	 */
 	@Override
 	@Transactional
-	public Facility findFacility(String facilityId) {
+	public Facility findFacility(Integer facilityId) {
 		return facilityRepository.findOne(facilityId);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.iss.cab.service.FacilityService#createFacility(edu.iss.cab.model.
-	 * Facility)
-	 */
 	@Override
 	@Transactional
 	public Facility createFacility(Facility facility) {
 		return facilityRepository.saveAndFlush(facility);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.iss.cab.service.FacilityService#updateFacility(edu.iss.cab.model.
-	 * Facility)
-	 */
 	@Override
 	@Transactional
 	public Facility updateFacility(Facility facility) {
 		return facilityRepository.saveAndFlush(facility);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.iss.cab.service.FacilityService#removeFacility(edu.iss.cab.model.
-	 * Facility)
-	 */
 	@Override
 	public void removeFacility(Facility facility) {
 		facilityRepository.setDeleteStatus(facility.getFacilityId());
@@ -66,5 +43,12 @@ public class FacilityServiceImpl implements FacilityService {
 	public ArrayList<Facility> findAllFacilitiesWithStatus() {
 		// TODO Auto-generated method stub
 		return facilityRepository.findAllAvailableFacilities();
+	}
+
+	/* Search Function - For Searching to book facility - admin */
+	@Transactional
+	public ArrayList<Facility> searchFacilitiesByName(String content) {
+		ArrayList<Facility> ul = (ArrayList<Facility>) facilityRepository.findAllAvailableFacilitiesByName(content);
+		return ul;
 	}
 }

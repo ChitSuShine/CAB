@@ -14,7 +14,7 @@
 					htmlEscape="true" /> <a href="${hlist}"> <spring:message
 						code="menu.admin.historylist" />
 			</a></li>
-			<li><spring:url value="/booking/facilities" var="mlist"
+			<li><spring:url value="/facilities" var="mlist"
 					htmlEscape="true" /> <a href="${mlist}"> <spring:message
 						code="menu.admin.maintenancelist" />
 			</a></li>
@@ -30,6 +30,10 @@
 					htmlEscape="true" /> <a href="${flist}"> <spring:message
 						code="menu.admin.facilitylist" />
 			</a></li>
+			<li><spring:url value="/admin/user/profile" var="profile"
+					htmlEscape="true" /> <a href="${profile}"> <spring:message
+						code="menu.profile" />
+			</a></li>
 			<li><spring:url value="/logout" var="logout" htmlEscape="true" />
 				<a href="${logout}"> <spring:message code="menu.logout" />
 			</a></li>
@@ -43,9 +47,13 @@
 					htmlEscape="true" /> <a href="${mhlist}"> <spring:message
 						code="menu.member.historylist" />
 			</a></li>
-			<li><spring:url value="/member/booking/facility" var="mflist"
+			<li><spring:url value="/facilities" var="mflist"
 					htmlEscape="true" /> <a href="${mflist}"> <spring:message
 						code="menu.member.maintenancelist" />
+			</a></li>
+			<li><spring:url value="/member/profile" var="profile"
+					htmlEscape="true" /> <a href="${profile}"> <spring:message
+						code="menu.profile" />
 			</a></li>
 			<li><spring:url value="/logout" var="logout" htmlEscape="true" />
 				<a href="${logout}"> <spring:message code="menu.logout" />

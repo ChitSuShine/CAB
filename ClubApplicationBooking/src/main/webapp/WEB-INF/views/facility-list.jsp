@@ -8,12 +8,13 @@
 <form:form method="GET"
 	action="${pageContext.request.contextPath}/admin/facility/create">
 	<input type="submit" value="Add Facility" class="blcass" />
+	<font color="Blue" size="3px">${message}</font>
 	<c:if test="${fn:length(facilityList) gt 0}">
 		<table style="cellspacing: 2; cellpadding: 2; border: 1;">
 
 			<tr class="listHeading">
-				<th><spring:message code="fieldLabel.facilityId" /></th>
-				<th><spring:message code="fieldLabel.facilityName" /></th>
+				<th><spring:message code="fieldLabel.id" /></th>
+				<th><spring:message code="fieldLabel.name" /></th>
 				<th><spring:message code="fieldLabel.facilityDes" /></th>
 				<th><spring:message code="fieldLabel.facilityPrice" /></th>
 				<th><spring:message code="caption.operations" /></th>

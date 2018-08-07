@@ -1,47 +1,65 @@
 package edu.iss.cab.model;
 
-
-
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Basic;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-
-
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
 
 @Entity
 @Table(name = "user")
 public class User {
 	@Id
 	@Column(name = "user_id")
-	
-	private String userId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer userId;
+
 	@Basic(optional = false)
 	@Column(name = "user_name")
-	private String name;
+	private String userName;
+
+	@Size(min = 6, max = 15)
+	@Basic(optional = false)
 	private String password;
-	private String role;
+
+	@Size(min = 8, max = 12)
+	@Basic(optional = false)
 	private String phone;
+
+	@Basic(optional = false)
+	@Email
 	private String email;
-	
-	public String getUserId() {
+
+	private String role;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<Booking> bookings = new ArrayList<Booking>();
+
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 
-	public String getName() {
-		return name;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public String getPassword() {

@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import edu.iss.cab.exception.FacilityNotFoundException;
+import edu.iss.cab.model.Booking;
 import edu.iss.cab.model.Facility;
+import edu.iss.cab.service.BookingService;
 import edu.iss.cab.service.FacilityService;
 import edu.iss.cab.validator.FacilityValidator;
 
@@ -25,6 +28,9 @@ import edu.iss.cab.validator.FacilityValidator;
 public class AdminFacilityController {
 	@Autowired
 	private FacilityService fService;
+
+	@Autowired
+	private BookingService bService;
 
 	@Autowired
 	private FacilityValidator fValidator;
@@ -38,10 +44,10 @@ public class AdminFacilityController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView newFacilityPage() {
 		ModelAndView mav = new ModelAndView("facility-new", "facility", new Facility());
-		mav.addObject("fidlist", fService.findAllFacilitiesWithStatus());
 		return mav;
 	}
 
+	// Creating a new Facility
 	@RequestMapping(params = "create", value = "/create", method = RequestMethod.POST)
 	public ModelAndView createNewFacility(@ModelAttribute @Valid Facility facility, BindingResult result,
 			final RedirectAttributes redirectAttributes) {
@@ -50,7 +56,7 @@ public class AdminFacilityController {
 			return new ModelAndView("facility-new");
 
 		ModelAndView mav = new ModelAndView();
-		String message = "New Facility " + facility.getFacilityName() + " was successfully created.";
+		String message = "New Facility \"" + facility.getFacilityName() + "\" was successfully created.";
 
 		fService.createFacility(facility);
 		mav.setViewName("redirect:/admin/facility/list");
@@ -59,11 +65,13 @@ public class AdminFacilityController {
 		return mav;
 	}
 
+	// Canceling creation of new Facility
 	@RequestMapping(params = "cancel", value = "/create", method = RequestMethod.POST)
 	public String cancelNewFacility() {
 		return "redirect:/admin/facility/list";
 	}
 
+	// Showing list of facilities
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView facilityListPage() {
 		ModelAndView mav = new ModelAndView("facility-list");
@@ -72,17 +80,20 @@ public class AdminFacilityController {
 		return mav;
 	}
 
+	// Editing a facility
 	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
 	public ModelAndView editFacilityPage(@PathVariable String id) {
 		ModelAndView mav = new ModelAndView("facility-edit");
-		Facility facility = fService.findFacility(id);
+		Integer fId = Integer.valueOf(id);
+		Facility facility = fService.findFacility(fId);
 		mav.addObject("facility", facility);
 		return mav;
 	}
 
+	// Updating a facility
 	@RequestMapping(params = "update", value = "/edit/{id}", method = RequestMethod.POST)
 	public ModelAndView editFacility(@ModelAttribute @Valid Facility facility, BindingResult result,
-			@PathVariable String id, final RedirectAttributes redirectAttributes) {
+			@PathVariable String id, final RedirectAttributes redirectAttributes) throws FacilityNotFoundException {
 
 		if (result.hasErrors())
 			return new ModelAndView("facility-edit");
@@ -90,7 +101,8 @@ public class AdminFacilityController {
 		ModelAndView mav = new ModelAndView("redirect:/admin/facility/list");
 		String message = "Facility was successfully updated.";
 
-		facility.setFacilityId(id);
+		Integer fId = Integer.valueOf(id);
+		facility.setFacilityId(fId);
 		fService.updateFacility(facility);
 
 		redirectAttributes.addFlashAttribute("message", message);
@@ -102,16 +114,23 @@ public class AdminFacilityController {
 		return "redirect:/admin/facility/list";
 	}
 
+	// Deleting a facility
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	public ModelAndView deleteFacility(@PathVariable String id, final RedirectAttributes redirectAttributes)
-			throws Exception {
+			throws FacilityNotFoundException {
 
 		ModelAndView mav = new ModelAndView("redirect:/admin/facility/list");
-		// Need to check Booking with this Facility ID
-		Facility facility = fService.findFacility(id);
-		fService.removeFacility(facility);
-		String message = "The facility " + facility.getFacilityName() + " was successfully deleted.";
+		Integer fId = Integer.valueOf(id);
 
+		// Check Booking with this Facility ID
+
+		List<Booking> bookings = bService.searchByFacilityId(fId);
+		String message = "WARNING!!! This facility has already booked, so cannot be deleted!";
+		if (bookings.size() == 0) {
+			Facility facility = fService.findFacility(fId);
+			fService.removeFacility(facility);
+			message = "The facility " + facility.getFacilityName() + " was successfully deleted.";
+		}
 		redirectAttributes.addFlashAttribute("message", message);
 		return mav;
 	}
